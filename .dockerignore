@@ -1,0 +1,10 @@
+.git
+.github
+.claude
+Dockerfile
+nginx.conf
+.dockerignore
+azure-setup.sh
+README.md
+handover.md
+staticwebapp.config.json

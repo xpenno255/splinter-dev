@@ -119,3 +119,29 @@ values to match your logo once you have it.
 Azure Static Web Apps Free: free hosting + SSL, a custom domain, global CDN,
 100 GB bandwidth/month — plenty for a band site. No uptime SLA (fine here).
 Check Azure's pricing page before launch in case limits change.
+
+---
+
+## Deploying (Azure Container Apps + GHCR)
+
+This repo ships as a Docker container: nginx serving the static site
+(`Dockerfile` + `nginx.conf`). Every push to `main` triggers
+`.github/workflows/deploy.yml`, which builds the image, pushes it to
+GitHub Container Registry, and rolls it out to Azure Container Apps.
+
+First-time setup (once):
+
+1. Push to `main` — the build job publishes
+   `ghcr.io/xpenno255/splinter-website`. (The deploy job skips itself
+   until step 3.)
+2. Make the package public: GitHub → your profile → Packages →
+   `splinter-website` → Package settings → Change visibility → Public.
+   (Lets the Container App pull it without registry credentials.)
+3. Run `./azure-setup.sh` (needs the az CLI + gh CLI). It creates the
+   resource group, Container Apps environment and app, wires GitHub
+   Actions OIDC deploy credentials, and prints your site URL.
+
+Costs: the Container Apps free monthly grant covers a scaled-to-zero,
+low-traffic site; GHCR is free for public packages. There is no Azure
+Container Registry (that one has a monthly fee). The app cold-starts a
+few seconds after long idle — that's the scale-to-zero trade.
