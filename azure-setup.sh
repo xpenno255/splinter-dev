@@ -73,6 +73,36 @@ gh secret set AZURE_TENANT_ID       --repo "$REPO" --body "$TENANT_ID"
 gh secret set AZURE_SUBSCRIPTION_ID --repo "$REPO" --body "$SUBSCRIPTION_ID"
 gh variable set AZURE_CONFIGURED    --repo "$REPO" --body "true"
 
+echo "==> Budget alert (belt and braces — the scale-to-zero config should stay"
+echo "    at ~0 cost; this emails you if anything ever starts billing)"
+read -r -p "    Email address for budget alerts: " ALERT_EMAIL
+BUDGET_START=$(date -u +%Y-%m-01)T00:00:00Z
+BUDGET_END=$(date -u -d "+5 years" +%Y-%m-01 2>/dev/null || date -u -v+5y +%Y-%m-01)T00:00:00Z
+
+az rest --method put \
+  --url "https://management.azure.com/subscriptions/${SUBSCRIPTION_ID}/resourceGroups/${RG}/providers/Microsoft.Consumption/budgets/splinter-budget?api-version=2023-11-01" \
+  --body "{
+    \"properties\": {
+      \"category\": \"Cost\",
+      \"amount\": 5,
+      \"timeGrain\": \"Monthly\",
+      \"timePeriod\": { \"startDate\": \"${BUDGET_START}\", \"endDate\": \"${BUDGET_END}\" },
+      \"notifications\": {
+        \"actual50pct\": {
+          \"enabled\": true, \"operator\": \"GreaterThan\", \"threshold\": 50,
+          \"contactEmails\": [\"${ALERT_EMAIL}\"], \"thresholdType\": \"Actual\"
+        },
+        \"actual100pct\": {
+          \"enabled\": true, \"operator\": \"GreaterThan\", \"threshold\": 100,
+          \"contactEmails\": [\"${ALERT_EMAIL}\"], \"thresholdType\": \"Actual\"
+        }
+      }
+    }
+  }" -o none
+echo "    Budget: 5 (billing currency)/month on ${RG}; alerts at 50% and 100% to ${ALERT_EMAIL}"
+echo "    (Budgets alert — they don't cap spending. At this config the worst"
+echo "     case is bounded by max-replicas 1 anyway.)"
+
 echo ""
 echo "============================================================"
 echo "  Done. Site: https://${FQDN}"
