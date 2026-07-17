@@ -21,8 +21,12 @@ APP_NAME="splinter-web"
 REPO="xpenno255/splinter-website"
 IMAGE="ghcr.io/${REPO}:latest"
 
-echo "==> Logging in (browser window will open)"
-az login
+if az account show -o none 2>/dev/null; then
+  echo "==> Already logged in — reusing session"
+else
+  echo "==> Logging in (browser window will open)"
+  az login
+fi
 
 SUBSCRIPTION_ID=$(az account show --query id -o tsv)
 TENANT_ID=$(az account show --query tenantId -o tsv)
