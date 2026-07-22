@@ -443,6 +443,7 @@
         var coverW = Math.max(vw, vh * 16 / 9);       // frame width at object-fit: cover
         var fit = vw / (coverW * ART_W_FRAC);         // scale putting the logo at exactly viewport width
         var els = mediaEls();
+        var smooth = function (x) { x = Math.min(Math.max(x, 0), 1); return x * x * (3 - 2 * x); };
         if (fit >= 1) {                               // wide screens: cover already shows the logo
           els.forEach(function (el) {
             el.style.width = ''; el.style.left = ''; el.style.marginLeft = '';
@@ -450,10 +451,9 @@
           });
           return;
         }
-        // Zoom completes 45% into scene 1's scroll band (1.6 scroll x 1.2 mobile factor)
+        // Narrow screens: logo fitted at rest, zoom to full-bleed by 45% of the band
         var p = Math.min(Math.max(window.scrollY / (vh * 1.92 * 0.45), 0), 1);
-        var e = p * p * (3 - 2 * p);
-        var s = fit + (1 - fit) * e;
+        var s = fit + (1 - fit) * smooth(p);
         els.forEach(function (el) {
           el.style.width = coverW + 'px';
           el.style.left = '50%';
