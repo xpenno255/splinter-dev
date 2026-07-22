@@ -2,11 +2,17 @@
   "$schema": "https://json.schemastore.org/staticwebapp.config.json",
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/assets/*", "/data/*", "*.{css,js,svg,jpg,png,json,ico}"]
+    "exclude": [
+      "/assets/*",
+      "/data/*",
+      "*.{css,js,svg,jpg,png,json,ico}"
+    ]
   },
   "mimeTypes": {
     ".json": "application/json",
-    ".svg": "image/svg+xml"
+    ".svg": "image/svg+xml",
+    ".mp4": "video/mp4",
+    ".webp": "image/webp"
   },
   "globalHeaders": {
     "X-Content-Type-Options": "nosniff",
@@ -16,11 +22,15 @@
   "routes": [
     {
       "route": "/data/*",
-      "headers": { "Cache-Control": "no-cache" }
+      "headers": {
+        "Cache-Control": "no-cache"
+      }
     },
     {
       "route": "/assets/*",
-      "headers": { "Cache-Control": "public, max-age=86400" }
+      "headers": {
+        "Cache-Control": "public, max-age=86400"
+      }
     }
   ]
 }
