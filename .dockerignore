@@ -1,9 +1,0 @@
-.git
-.github
-.claude
-Dockerfile
-.dockerignore
-azure-setup.sh
-README.md
-handover.md
-staticwebapp.config.json
