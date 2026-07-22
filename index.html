@@ -82,6 +82,9 @@
       font-size: 0.78rem;
     }
     .sw-embed--contact .contact__socials .social__icon { width: 18px; height: 18px; }
+    /* Scene 1's media gets a full-frame box + scale on narrow screens (JS above);
+       clip the horizontal overflow it creates. */
+    #home .sw-scene:first-of-type { overflow: hidden; }
     .world-footnote { margin-top: 14px; font-size: 0.78rem; color: var(--sw-ink-soft, #9a93a6); }
     .world-footnote a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(150, 47, 209, 0.5); }
     @media (max-width: 860px) {
@@ -420,6 +423,52 @@
       }
       window.addEventListener('scroll', fade, { passive: true });
       fade();
+    })();
+
+    // Narrow screens crop the 16:9 video, chopping the ends off the logo.
+    // Fix: give scene 1's media an uncropped full-frame box and scale it so
+    // the logo fits the screen width at rest, then zoom smoothly to full-bleed
+    // cover over the first stretch of the flight (the clip's black backdrop
+    // matches the page, so the letterboxing is invisible).
+    (function () {
+      var ART_W_FRAC = 1536 / 1820;   // logo width as a fraction of the video frame
+      function mediaEls() {
+        var scene = document.querySelector('#home .sw-scene');
+        return scene ? scene.querySelectorAll('.sw-scene__video, .sw-scene__still') : [];
+      }
+      var ticking = false;
+      function apply() {
+        ticking = false;
+        var vw = window.innerWidth, vh = window.innerHeight;
+        var coverW = Math.max(vw, vh * 16 / 9);       // frame width at object-fit: cover
+        var fit = vw / (coverW * ART_W_FRAC);         // scale putting the logo at exactly viewport width
+        var els = mediaEls();
+        if (fit >= 1) {                               // wide screens: cover already shows the logo
+          els.forEach(function (el) {
+            el.style.width = ''; el.style.left = ''; el.style.marginLeft = '';
+            el.style.transform = ''; el.style.transformOrigin = '';
+          });
+          return;
+        }
+        // Zoom completes 45% into scene 1's scroll band (1.6 scroll x 1.2 mobile factor)
+        var p = Math.min(Math.max(window.scrollY / (vh * 1.92 * 0.45), 0), 1);
+        var e = p * p * (3 - 2 * p);
+        var s = fit + (1 - fit) * e;
+        els.forEach(function (el) {
+          el.style.width = coverW + 'px';
+          el.style.left = '50%';
+          el.style.marginLeft = (-coverW / 2) + 'px';
+          el.style.transformOrigin = '50% 44%';
+          el.style.transform = 'scale(' + s + ')';
+        });
+      }
+      function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(apply); } }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      // The video element is created once its blob loads — re-apply for a while
+      var tries = 0;
+      var t = setInterval(function () { apply(); if (++tries > 24) clearInterval(t); }, 500);
+      apply();
     })();
   </script>
 </body>
