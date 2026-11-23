@@ -1,475 +1,244 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Splinter — High-Energy Rock Covers | Black Country</title>
+  <title>Splinter — High Energy Rock Covers | Black Country</title>
   <meta name="description" content="Splinter — a high-energy rock covers band from the Black Country, smashing out the best heavy rock from the past five decades. Book us for your event." />
-
-  <meta property="og:title" content="Splinter — High-Energy Rock Covers" />
+  <meta property="og:title" content="Splinter — High Energy Rock Covers" />
   <meta property="og:description" content="Heavy rock covers from the Black Country — AC/DC, Guns N' Roses, Sabbath, Muse, Royal Blood, QOTSA and more." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/logo.jpg" />
-
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-
+  <meta property="og:image" content="assets/poster/og-poster.jpg" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="icon" href="assets/poster/favicon-poster.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
-  <link rel="stylesheet" href="assets/styles.css" />
-  <style>
-    /* scroll-world theme — matches the site design tokens */
-    :root, .sw-root {
-      --sw-bg: #000000;
-      --sw-ink: #f4f1f7;
-      --sw-ink-soft: #9a93a6;
-      --sw-accent: #962fd1;
-      --sw-font-display: "Big Shoulders Display", Impact, sans-serif;
-      --sw-font-body: "Archivo", system-ui, sans-serif;
-    }
-    /* The engine's primary button is styled for light pages (ink background);
-       on our dark theme ink is near-white, so re-anchor it to the accent. */
-    .sw-btn--primary { background: var(--sw-accent) !important; color: #fff !important; }
-    /* Hero copy stays veiled while the logo overlay is up (landing = pure logo
-       moment); it fades in with the first scroll as the logo dissolves. */
-    .sw-copy.hero-veiled { opacity: 0 !important; transition: opacity 0.4s ease; }
-    /* Real section content folded into the world's copy panels */
-    /* Room to breathe on big screens, and never overflow the fold on short ones:
-       the article becomes a capped flex column and the embed shrinks (scrolling
-       internally) rather than pushing content off-screen. */
-    /* The engine's scroll parallax overwrites the panel's translateY(-50%)
-       centering, so we anchor embed-carrying panels ourselves: bottom-left,
-       clear of the nav, capped so they can never overflow the viewport. */
-    #home .sw-copy:has(.sw-embed) {
-      width: min(46vw, 620px);
-      top: auto; bottom: 7vh;
-      max-height: calc(88vh - max(96px, 10vh));
-      display: flex; flex-direction: column;
-      justify-content: flex-end;
-    }
-    #home .sw-copy:has(.sw-embed) .sw-embed { flex: 0 1 auto; min-height: 0; }
-    .sw-embed {
-      margin-top: 18px; pointer-events: auto;
-      background: rgba(6, 2, 10, 0.55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(150, 47, 209, 0.28); border-radius: 10px;
-      padding: 14px 18px; max-height: 52vh; overflow: auto; scrollbar-width: thin;
-    }
-    .sw-embed--bio .bio__lead { font-size: 1.05rem; margin: 0 0 0.6rem; }
-    .sw-embed--bio p { font-size: 0.95rem; line-height: 1.6; }
-    .sw-embed--bio .bio__facts { margin-top: 0.8rem; }
-    .sw-embed--gigs .gigs__subtitle { display: none; }         /* eyebrow already says Live Dates */
-    /* One clean line per gig: [day] [date] [venue] [tickets] */
-    .sw-embed--gigs .gig {
-      display: grid; grid-template-columns: auto auto 1fr auto;
-      align-items: baseline; column-gap: 1rem; padding: 0.6rem 0.2rem;
-    }
-    .sw-embed--gigs .gig__venue { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .sw-embed--gigs .gig__meta { display: none; }              /* keep rows to one line in-world */
-    .sw-embed--videos { padding: 10px; }
-    .sw-embed--videos .video { aspect-ratio: 16 / 9; }
-    .sw-embed--videos .videos__foot { margin-top: 10px; text-align: left; }
-    .sw-embed--contact .contact__lead { display: none; }       /* title already says it */
-    .sw-embed--contact .contact__email { font-size: clamp(1.05rem, 1.8vw, 1.35rem); }
-    .sw-embed--contact .contact__socials {
-      margin-top: 0.8rem; display: flex; gap: 0.6rem; flex-wrap: wrap;
-    }
-    .sw-embed--contact .contact__socials li { flex: 0 0 auto; }
-    .sw-embed--contact .contact__socials a {
-      display: inline-flex; align-items: center; gap: 0.45rem;
-      padding: 0.5rem 0.9rem; border: 1px solid var(--line); border-radius: 999px;
-      font-size: 0.78rem;
-    }
-    .sw-embed--contact .contact__socials .social__icon { width: 18px; height: 18px; }
-    /* Scene 1's media gets a full-frame box + scale on narrow screens (JS above);
-       clip the horizontal overflow it creates. */
-    #home .sw-scene:first-of-type { overflow: hidden; }
-    .world-footnote { margin-top: 14px; font-size: 0.78rem; color: var(--sw-ink-soft, #9a93a6); }
-    .world-footnote a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(150, 47, 209, 0.5); }
-    @media (max-width: 860px) {
-      /* Mobile: content scenes go centred and near-fullscreen. The engine already
-         bottom-anchors .sw-copy and paints a bottom gradient scrim behind it. */
-      #home .sw-copy:has(.sw-embed) {
-        left: 14px; right: 14px; width: auto; max-width: none;
-        bottom: calc(clamp(40px, 8dvh, 84px) + env(safe-area-inset-bottom));
-        max-height: 80vh;
-        text-align: center;
-      }
-      .sw-embed { max-height: 64vh; padding: 12px 10px; }
-      /* Gig rows: [day + date] centred, venue on its own line beneath */
-      .sw-embed--gigs .gig {
-        display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline;
-        gap: 0.15rem 0.6rem; padding: 0.65rem 0;
-      }
-      .sw-embed--gigs .gig__venue {
-        flex-basis: 100%; white-space: normal; overflow: visible; text-align: center;
-      }
-      .sw-embed--bio { text-align: left; }
-      .sw-embed--bio p:not(.bio__lead) { display: none; }      /* keep the panel light on phones */
-      .sw-embed--contact .contact__socials { justify-content: center; }
-      .sw-copy__tags { justify-content: center; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&family=Permanent+Marker&family=Special+Elite&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="assets/poster/logo-poster.png" />
+  <link rel="stylesheet" href="assets/poster.css" />
 </head>
 <body>
+  <!-- Ink-bleed filter: roughens big type so it reads as printed, not rendered -->
+  <svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+    <filter id="rough" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" seed="7" result="n" />
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+    <filter id="rough-sm" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="3" result="n" />
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.5" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </svg>
+
   <div class="grain" aria-hidden="true"></div>
+  <canvas class="shards" id="shards" aria-hidden="true"></canvas>
+
+  <a class="skip" href="#band">Skip to content</a>
 
   <!-- ===================== NAV ===================== -->
   <header class="nav" id="nav">
-    <!-- EDIT ME: this is the nav wordmark logo -->
-    <a class="nav__brand" href="#home" aria-label="Splinter — home"><img src="assets/logo-text.png" alt="Splinter" class="nav__logo" /></a>
-
+    <a class="nav__brand" href="#home" aria-label="Splinter — home">
+      <img src="assets/poster/logo-poster-720.png" alt="Splinter" width="720" height="407" data-classic="assets/poster/wordmark.png" />
+    </a>
     <nav class="nav__links" aria-label="Primary">
-      <a href="#home" class="nav__link is-active">Home</a>
-      <a href="#bio" class="nav__link">Bio</a>
-      <a href="#gigs" class="nav__link">Gigs</a>
+      <a href="#band" class="nav__link">The Band</a>
+      <a href="#setlist" class="nav__link">Setlist</a>
+      <a href="#gigs" class="nav__link">Live Dates</a>
       <a href="#videos" class="nav__link">Videos</a>
-      <a href="#contact" class="nav__link">Contact</a>
+      <a href="#contact" class="nav__link nav__link--cta">Book Us</a>
     </nav>
-
-    <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
-      <span></span><span></span><span></span>
+    <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
+      <span>Menu</span>
     </button>
   </header>
 
+  <!-- Full-screen mobile menu (sibling of the nav so it is not caught in its blend mode) -->
+  <div class="menu" id="menu" hidden>
+    <nav aria-label="Mobile">
+      <a href="#home">Home</a>
+      <a href="#band">The Band</a>
+      <a href="#setlist">Setlist</a>
+      <a href="#gigs">Live Dates</a>
+      <a href="#videos">Videos</a>
+      <a href="#contact">Book Us</a>
+    </nav>
+    <p class="menu__foot">High energy rock covers · The Black Country</p>
+  </div>
+
   <main>
-    <!-- ===================== HERO / HOME — scroll world ===================== -->
-    <div id="home" class="world" aria-label="Splinter — a night at a gig, scroll to fly through">
-      <!-- Static SEO copy: crawlable mirror of the world's on-screen copy.
-           The engine hides this block on mount. -->
-      <section data-sw-seo>
-        <h1>Splinter — high-energy rock covers from the Black Country</h1>
-        <p>Scroll through a night at a Splinter gig — from the van to the encore.</p>
-        <h2>The Band — Five decades of rock. One setlist.</h2>
-        <p>From AC/DC, Guns N’ Roses and Black Sabbath through to Muse, Royal Blood and Queens of the Stone Age.</p>
-        <h2>Live Dates — Catch us live.</h2>
-        <p>Pubs, clubs and festivals across the Black Country and beyond.</p>
-        <h2>Videos — See us in action.</h2>
-        <p>Watch full-tilt live sets and session clips on our YouTube channel.</p>
-        <h2>Book Us — Let’s make some noise.</h2>
-        <p><a href="mailto:splinterbcc@gmail.com">splinterbcc@gmail.com</a> · <a href="#gigs">Live dates</a> · <a href="#videos">Watch us play</a></p>
-      </section>
+    <!-- ===================== HERO ===================== -->
+    <section class="hero" id="home" aria-label="Splinter — high energy rock covers">
+      <video class="hero__video" id="heroVideo" muted loop playsinline preload="none"
+             poster="assets/poster/hero-poster.jpg" aria-hidden="true"
+             data-src="assets/poster/hero.mp4" data-src-mobile="assets/poster/hero-m.mp4"></video>
+      <div class="hero__dots" aria-hidden="true"></div>
+      <canvas class="hero__burst" id="burst" aria-hidden="true"></canvas>
+
+      <div class="hero__stage">
+        <h1 class="hero__logo" id="heroLogo">
+          <img src="assets/poster/logo-poster.png" alt="Splinter" width="1707" height="965" fetchpriority="high" data-classic="assets/poster/logo.png" />
+        </h1>
+        <p class="hero__shout" aria-label="High energy rock covers!">
+          <span>High energy</span>
+          <span>rock covers!</span>
+        </p>
+      </div>
+
+      <div class="hero__foot">
+        <div class="next" id="nextGig">
+          <p class="next__label"><span class="blink" aria-hidden="true"></span><span id="nextLabel">Next up</span></p>
+          <p class="next__date" id="nextDate">Live &amp; loud</p>
+          <p class="next__venue" id="nextVenue">Pubs, clubs and festivals across the Black Country</p>
+        </div>
+        <a class="doors" href="#gigs" id="doors">
+          <span class="doors__label" id="doorsLabel">Live dates</span>
+          <span class="doors__count" id="countdown" aria-live="off">See the list</span>
+          <span class="doors__more">All dates <span aria-hidden="true">↓</span></span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===================== TAPE ===================== -->
+    <div class="tapes" aria-hidden="true">
+      <div class="tape tape--a"><div class="tape__track">
+        <span>High energy rock covers ✦ Live &amp; loud ✦ The Black Country ✦ Five decades of riffs ✦&nbsp;</span>
+        <span>High energy rock covers ✦ Live &amp; loud ✦ The Black Country ✦ Five decades of riffs ✦&nbsp;</span>
+      </div></div>
+      <div class="tape tape--b"><div class="tape__track">
+        <span>AC/DC ✦ Guns N’ Roses ✦ Black Sabbath ✦ Foo Fighters ✦ Muse ✦ Black Stone Cherry ✦ Royal Blood ✦ Queens of the Stone Age ✦&nbsp;</span>
+        <span>AC/DC ✦ Guns N’ Roses ✦ Black Sabbath ✦ Foo Fighters ✦ Muse ✦ Black Stone Cherry ✦ Royal Blood ✦ Queens of the Stone Age ✦&nbsp;</span>
+      </div></div>
     </div>
 
-    <!-- ===================== MARQUEE ===================== -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee__track">
-        <span>AC/DC ✦ Guns N’ Roses ✦ Black Sabbath ✦ Black Stone Cherry ✦ Muse ✦ Royal Blood ✦ Queens Of The Stone Age ✦&nbsp;</span>
-        <span>AC/DC ✦ Guns N’ Roses ✦ Black Sabbath ✦ Black Stone Cherry ✦ Muse ✦ Royal Blood ✦ Queens Of The Stone Age ✦&nbsp;</span>
-      </div>
-    </div>
+    <!-- ===================== THE BAND ===================== -->
+    <section class="sheet sheet--paper band" id="band" data-torn>
+      <header class="head">
+        <p class="head__no">№ 01 <span>/ The Band</span></p>
+        <h2 class="head__title reveal"><span>Five decades</span> <span>of rock.</span> <span class="hollow">One setlist.</span></h2>
+      </header>
 
-    <!-- ===================== BIO ===================== -->
-    <section class="section bio" id="bio">
-      <div class="section__head">
-        <span class="section__index">01</span>
-        <h2 class="section__title">The Band</h2>
-      </div>
-      <div class="bio__grid bio__grid--solo">
-        <figure class="bio__portrait" hidden>
-          <div class="bio__portrait-frame">
-            <!-- EDIT ME: drop a band photo at assets/band.jpg, point this here, then remove the `hidden` above to show it -->
-            <img src="assets/portrait-placeholder.svg" alt="Splinter live on stage" />
-          </div>
-        </figure>
-        <div class="bio__text">
-          <p class="bio__lead">
+      <div class="band__grid">
+        <div class="snaps">
+          <figure class="snap reveal">
+            <span class="snap__tape snap__tape--l" aria-hidden="true"></span>
+            <span class="snap__tape snap__tape--r" aria-hidden="true"></span>
+            <div class="halftone">
+              <img src="assets/poster/encore.webp" alt="A guitarist silhouetted against stage lights, guitar raised to the crowd" width="1600" height="905" loading="lazy" />
+            </div>
+            <figcaption>Exhibit A — the last chord of the night.</figcaption>
+          </figure>
+          <figure class="snap snap--b reveal">
+            <span class="snap__tape snap__tape--c" aria-hidden="true"></span>
+            <div class="halftone">
+              <img src="assets/poster/show.webp" alt="A crowd with hands in the air in front of a band under bright stage beams" width="1600" height="905" loading="lazy" />
+            </div>
+            <figcaption>Exhibit B — hands up at the front.</figcaption>
+          </figure>
+        </div>
+
+        <div class="band__text">
+          <p class="lead reveal">
             Splinter — a high-energy rock covers band from the Black Country,
             smashing out the best heavy rock tracks from the past five decades.
           </p>
-          <p>
+          <p class="reveal">
             From AC/DC, Guns N’ Roses and Black Sabbath through to Black Stone Cherry,
             Muse, Royal Blood and Queens of the Stone Age — if it’s loud and it riffs,
             it’s in the set. Expect a relentless, high-octane show built to get a room moving.
           </p>
-          <ul class="bio__facts">
-            <li><span>Based in</span> The Black Country, UK</li>
-            <li><span>Style</span> Heavy rock covers</li>
-            <li><span>For fans of</span> AC/DC · Sabbath · QOTSA</li>
-          </ul>
+          <dl class="facts reveal">
+            <div><dt>Based in</dt><dd>The Black Country, UK</dd></div>
+            <div><dt>Style</dt><dd>Heavy rock covers</dd></div>
+            <div><dt>For fans of</dt><dd>AC/DC · Sabbath · QOTSA</dd></div>
+          </dl>
+          <p class="scrawl reveal" aria-hidden="true">
+            <svg viewBox="0 0 120 60" width="96" height="48"><path d="M6 12c22 30 52 40 96 34M86 34l18 12-20 9" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            bring earplugs.
+          </p>
         </div>
       </div>
     </section>
 
+    <!-- ===================== SETLIST ===================== -->
+    <section class="sheet sheet--ink setlist" id="setlist">
+      <div class="setlist__bg" aria-hidden="true"></div>
+      <header class="head">
+        <p class="head__no">№ 02 <span>/ The Setlist</span></p>
+        <h2 class="head__title reveal"><span>If it riffs,</span> <span class="hollow">it’s in.</span></h2>
+      </header>
+      <ol class="acts" aria-label="Artists we cover">
+        <li class="act" data-drift="-1"><span class="act__no">01</span><span class="act__name">AC/DC</span></li>
+        <li class="act" data-drift="1"><span class="act__no">02</span><span class="act__name">Guns N’ Roses</span></li>
+        <li class="act" data-drift="-1"><span class="act__no">03</span><span class="act__name">Black Sabbath</span></li>
+        <li class="act" data-drift="1"><span class="act__no">04</span><span class="act__name">Foo Fighters</span></li>
+        <li class="act" data-drift="-1"><span class="act__no">05</span><span class="act__name">Muse</span></li>
+        <li class="act" data-drift="1"><span class="act__no">06</span><span class="act__name">Black Stone Cherry</span></li>
+        <li class="act" data-drift="-1"><span class="act__no">07</span><span class="act__name">Royal Blood</span></li>
+        <li class="act" data-drift="1"><span class="act__no">08</span><span class="act__name">Queens of the Stone Age</span></li>
+      </ol>
+      <p class="setlist__more">…and plenty more where that came from.</p>
+    </section>
+
     <!-- ===================== GIGS ===================== -->
-    <section class="section gigs" id="gigs">
-      <div class="section__head">
-        <span class="section__index">02</span>
-        <h2 class="section__title">Live Dates</h2>
-      </div>
+    <section class="sheet sheet--paper gigs" id="gigs" data-torn>
+      <header class="head">
+        <p class="head__no">№ 03 <span>/ Live Dates</span></p>
+        <h2 class="head__title reveal"><span id="gigYear">2026</span> <span class="hollow">Gig list.</span></h2>
+      </header>
+
       <div class="gigs__body">
-        <div class="gigs__group">
-          <h3 class="gigs__subtitle">Upcoming</h3>
-          <ul class="gig-list" id="upcomingGigs">
-            <li class="gig-list__loading">Loading dates…</li>
-          </ul>
-        </div>
-        <div class="gigs__group gigs__group--past" id="pastGroup" hidden>
-          <h3 class="gigs__subtitle">Past shows</h3>
+        <ul class="gig-list" id="upcomingGigs">
+          <li class="gig-list__note">Loading dates…</li>
+        </ul>
+
+        <details class="past" id="pastGroup" hidden>
+          <summary><span>Past shows</span> <span class="past__count" id="pastCount"></span></summary>
           <ul class="gig-list gig-list--past" id="pastGigs"></ul>
-        </div>
+        </details>
+      </div>
+
+      <div class="sticker" aria-hidden="true">
+        <svg viewBox="0 0 200 200"><polygon id="stickerBurst" points="" /></svg>
+        <span>Play<br>it<br>loud</span>
       </div>
     </section>
 
     <!-- ===================== VIDEOS ===================== -->
-    <section class="section videos" id="videos">
-      <div class="section__head">
-        <span class="section__index">03</span>
-        <h2 class="section__title">Videos</h2>
-      </div>
+    <section class="sheet sheet--ink videos" id="videos">
+      <header class="head">
+        <p class="head__no">№ 04 <span>/ Videos</span></p>
+        <h2 class="head__title reveal"><span>See us</span> <span class="hollow">in action.</span></h2>
+      </header>
       <div class="video-grid" id="videoGrid">
-        <p class="video-grid__loading">Loading videos…</p>
+        <p class="video-grid__note">Loading videos…</p>
       </div>
     </section>
 
     <!-- ===================== CONTACT ===================== -->
-    <section class="section contact" id="contact">
-      <div class="section__head">
-        <span class="section__index">04</span>
-        <h2 class="section__title">Book Us</h2>
-      </div>
-      <div class="contact__inner">
-        <p class="contact__lead">Pubs, clubs, festivals, parties — let’s make some noise.</p>
-        <a class="contact__email" href="mailto:splinterbcc@gmail.com">splinterbcc@gmail.com</a>
-        <ul class="contact__socials" aria-label="Social links">
-          <li>
-            <a href="https://www.instagram.com/splinter.rockband/" target="_blank" rel="noopener">
-              <svg class="social__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="2" y="2" width="20" height="20" rx="5"/>
-                <circle cx="12" cy="12" r="5"/>
-                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
-              </svg>
-              <span>Instagram</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://www.facebook.com/splinterrockband" target="_blank" rel="noopener">
-              <svg class="social__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-              </svg>
-              <span>Facebook</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://www.youtube.com/@Splinterbcc" target="_blank" rel="noopener">
-              <svg class="social__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.96-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.96 1.96A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.41 19.1C5.12 19.56 12 19.56 12 19.56s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.96-1.96 29 29 0 0 0 .46-5.25 29 29 0 0 0-.47-5.47z"/>
-                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="#fff"/>
-              </svg>
-              <span>YouTube</span>
-            </a>
-          </li>
+    <section class="sheet sheet--paper contact" id="contact" data-torn>
+      <img class="contact__skull" src="assets/poster/skull-poster.png" alt="" width="486" height="413" loading="lazy" aria-hidden="true" data-classic="assets/poster/skull.png" />
+      <header class="head">
+        <p class="head__no">№ 05 <span>/ Book Us</span></p>
+        <h2 class="head__title head__title--xl reveal"><span>Let’s make</span> <span>some</span> <span class="hollow">noise.</span></h2>
+      </header>
+      <div class="contact__body">
+        <p class="lead reveal">Pubs, clubs, festivals, parties — drop us a line and we’ll bring the volume.</p>
+        <a class="contact__email reveal" href="mailto:splinterbcc@gmail.com">splinterbcc@gmail.com</a>
+        <ul class="socials reveal" aria-label="Social links">
+          <li><a href="https://www.instagram.com/splinter.rockband/" target="_blank" rel="noopener">Instagram <span aria-hidden="true">↗</span></a></li>
+          <li><a href="https://www.facebook.com/splinterrockband" target="_blank" rel="noopener">Facebook <span aria-hidden="true">↗</span></a></li>
+          <li><a href="https://www.youtube.com/@Splinterbcc" target="_blank" rel="noopener">YouTube <span aria-hidden="true">↗</span></a></li>
         </ul>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <span>© <span id="year"></span> Splinter</span>
-    <a href="#home" class="footer__top">Back to top ↑</a>
+    <img src="assets/poster/logo-poster-720.png" alt="" width="720" height="407" loading="lazy" data-classic="assets/poster/logo-720.png" />
+    <p>© <span id="year">2026</span> Splinter · The Black Country, UK</p>
+    <a href="#home">Back to top ↑</a>
   </footer>
 
-  <script src="assets/app.js"></script>
-  <script src="assets/scrub-engine.js"></script>
-  <script>
-    mountScrollWorld(document.getElementById('home'), {
-      nav: false,                 // the site's own fixed nav stays in charge (no engine brand chip either)
-      hint: 'scroll to start the night',
-      diveScroll: 1.3,
-      connScroll: 0.9,
-      crossfade: 0.08,            // architecture A: legs chain directly, tiny dissolve
-      sections: [
-        {
-          id: 'night', label: 'The Load-In',
-          still: 'assets/world/logo-start.png',
-          poster: 'assets/world/loadin-poster.webp',
-          clip: 'assets/world/vid/loadin.mp4',
-          clipMobile: 'assets/world/vid/loadin-m.mp4',
-          posterMobile: 'assets/world/loadin-poster-m.webp',
-          accent: '#962fd1',
-          scroll: 1.6, linger: 0.4,
-          eyebrow: 'Modern & Classic Hard Rock Covers',
-          title: 'The night starts early.',
-          body: 'High-energy rock from the Black Country — five decades of riffs in one van.',
-          tags: [],
-        },
-        {
-          id: 'bio-scene', label: 'Backstage',
-          still: 'assets/world/backstage.webp',
-          poster: 'assets/world/backstage-poster.webp',
-          clip: 'assets/world/vid/backstage.mp4',
-          clipMobile: 'assets/world/vid/backstage-m.mp4',
-          posterMobile: 'assets/world/backstage-poster-m.webp',
-          accent: '#b35ee8',
-          scroll: 1.4, linger: 0.3,
-          eyebrow: 'The Band',
-          title: 'Five decades of rock. One setlist.',
-          body: '',
-          tags: [],
-        },
-        {
-          id: 'gigs-scene', label: 'Soundcheck',
-          still: 'assets/world/soundcheck.webp',
-          poster: 'assets/world/soundcheck-poster.webp',
-          clip: 'assets/world/vid/soundcheck.mp4',
-          clipMobile: 'assets/world/vid/soundcheck-m.mp4',
-          posterMobile: 'assets/world/soundcheck-poster-m.webp',
-          accent: '#962fd1',
-          scroll: 1.7, linger: 0.5,
-          eyebrow: 'Live Dates',
-          title: 'Catch us live.',
-          body: '',
-          tags: [],
-        },
-        {
-          id: 'videos-scene', label: 'The Show',
-          still: 'assets/world/show.webp',
-          poster: 'assets/world/show-poster.webp',
-          clip: 'assets/world/vid/show.mp4',
-          clipMobile: 'assets/world/vid/show-m.mp4',
-          posterMobile: 'assets/world/show-poster-m.webp',
-          accent: '#b35ee8',
-          scroll: 1.5, linger: 0.35,
-          eyebrow: 'Videos',
-          title: 'See us in action.',
-          body: '',
-          tags: [],
-        },
-        {
-          id: 'book-scene', label: 'The Encore',
-          still: 'assets/world/encore.webp',
-          poster: 'assets/world/encore-poster.webp',
-          clip: 'assets/world/vid/encore.mp4',
-          clipMobile: 'assets/world/vid/encore-m.mp4',
-          posterMobile: 'assets/world/encore-poster-m.webp',
-          accent: '#962fd1',
-          scroll: 1.8, linger: 0.5,
-          eyebrow: 'Book Us',
-          title: 'Let’s make some noise.',
-          body: '',
-          tags: [],
-        },
-      ],
-      connectors: [null, null, null, null],       // architecture A: no connectors
-      connectorsMobile: [null, null, null, null],
-    });
-
-    // Fold the real section content INTO the world's copy panels (moved, not
-    // cloned, so app.js keeps filling #upcomingGigs / #videoGrid by id), then
-    // hide the now-empty shells and point the nav at the scenes.
-    (function () {
-      var copies = document.querySelectorAll('#home .sw-copy');
-      var dots = document.querySelectorAll('#home .sw-route__dot');
-      function moveInto(i, el, cls) {
-        if (!el || !copies[i]) return;
-        var slot = document.createElement('div');
-        slot.className = 'sw-embed' + (cls ? ' ' + cls : '');
-        slot.appendChild(el);
-        copies[i].appendChild(slot);
-      }
-      moveInto(1, document.querySelector('#bio .bio__text'), 'sw-embed--bio');
-      moveInto(2, document.querySelector('#gigs .gigs__group:not(.gigs__group--past)'), 'sw-embed--gigs');
-      moveInto(3, document.getElementById('videoGrid'), 'sw-embed--videos');
-      moveInto(4, document.querySelector('#contact .contact__inner'), 'sw-embed--contact');
-      document.querySelectorAll('main > .section, .marquee').forEach(function (s) { s.style.display = 'none'; });
-
-      // The world IS the page end: fold the footer's line into the finale panel
-      var siteFoot = document.querySelector('.footer');
-      if (siteFoot && copies[4]) {
-        siteFoot.style.display = 'none';
-        var note = document.createElement('div');
-        note.className = 'world-footnote';
-        note.innerHTML = '© ' + new Date().getFullYear() + ' Splinter · <a href="#" id="backToTop">Back to top ↑</a>';
-        copies[4].appendChild(note);
-        note.querySelector('#backToTop').addEventListener('click', function (e) {
-          e.preventDefault();
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-      }
-
-      // Nav links fly to their scene (the engine's route dots own the jump math)
-      var sceneFor = { '#home': 0, '#bio': 1, '#gigs': 2, '#videos': 3, '#contact': 4 };
-      document.querySelectorAll('.nav__link').forEach(function (a) {
-        a.addEventListener('click', function (e) {
-          var i = sceneFor[a.getAttribute('href')];
-          if (i == null) return;
-          e.preventDefault();
-          if (i === 0) window.scrollTo({ top: 0, behavior: 'smooth' });
-          else if (dots[i]) dots[i].click();
-        });
-      });
-      // Mirror the engine's active scene onto the site nav
-      var navLinks = [].slice.call(document.querySelectorAll('.nav__link'));
-      var mo = new MutationObserver(function () {
-        dots.forEach(function (d, i) {
-          if (d.classList.contains('is-active')) {
-            navLinks.forEach(function (l) {
-              l.classList.toggle('is-active', sceneFor[l.getAttribute('href')] === i);
-            });
-          }
-        });
-      });
-      dots.forEach(function (d) { mo.observe(d, { attributes: true, attributeFilter: ['class'] }); });
-    })();
-
-    // Landing is a pure logo moment (the video's frame 0 IS the logo artwork):
-    // the hero copy stays veiled at rest and fades in with the first scroll.
-    (function () {
-      function fade() {
-        var progress = Math.min(Math.max(window.scrollY / (window.innerHeight * 0.125), 0), 1);
-        var heroCopy = document.querySelector('#home .sw-copy');
-        if (heroCopy) heroCopy.classList.toggle('hero-veiled', progress < 0.5);
-      }
-      window.addEventListener('scroll', fade, { passive: true });
-      fade();
-    })();
-
-    // Narrow screens crop the 16:9 video, chopping the ends off the logo.
-    // Fix: give scene 1's media an uncropped full-frame box and scale it so
-    // the logo fits the screen width at rest, then zoom smoothly to full-bleed
-    // cover over the first stretch of the flight (the clip's black backdrop
-    // matches the page, so the letterboxing is invisible).
-    (function () {
-      var ART_W_FRAC = 1536 / 1820;   // logo width as a fraction of the video frame
-      function mediaEls() {
-        var scene = document.querySelector('#home .sw-scene');
-        return scene ? scene.querySelectorAll('.sw-scene__video, .sw-scene__still') : [];
-      }
-      var ticking = false;
-      function apply() {
-        ticking = false;
-        var vw = window.innerWidth, vh = window.innerHeight;
-        var coverW = Math.max(vw, vh * 16 / 9);       // frame width at object-fit: cover
-        var fit = vw / (coverW * ART_W_FRAC);         // scale putting the logo at exactly viewport width
-        var els = mediaEls();
-        var smooth = function (x) { x = Math.min(Math.max(x, 0), 1); return x * x * (3 - 2 * x); };
-        if (fit >= 1) {                               // wide screens: cover already shows the logo
-          els.forEach(function (el) {
-            el.style.width = ''; el.style.left = ''; el.style.marginLeft = '';
-            el.style.transform = ''; el.style.transformOrigin = '';
-          });
-          return;
-        }
-        // Narrow screens: logo fitted at rest, zoom to full-bleed by 45% of the band
-        var p = Math.min(Math.max(window.scrollY / (vh * 1.92 * 0.45), 0), 1);
-        var s = fit + (1 - fit) * smooth(p);
-        els.forEach(function (el) {
-          el.style.width = coverW + 'px';
-          el.style.left = '50%';
-          el.style.marginLeft = (-coverW / 2) + 'px';
-          el.style.transformOrigin = '50% 44%';
-          el.style.transform = 'scale(' + s + ')';
-        });
-      }
-      function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(apply); } }
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onScroll);
-      // The video element is created once its blob loads — re-apply for a while
-      var tries = 0;
-      var t = setInterval(function () { apply(); if (++tries > 24) clearInterval(t); }, 500);
-      apply();
-    })();
-  </script>
+  <script src="assets/poster.js" defer></script>
 </body>
 </html>
