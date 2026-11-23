@@ -7,7 +7,7 @@
    ============================================================ */
 
 const CONFIG = {
-  youtubeChannelUrl: "https://www.youtube.com/@Splinterbcc",
+  youtubeChannelUrl: "https://www.youtube.com/@Splinterrockband",
   // "Uploads" playlist = channel ID with "UC" swapped for "UU".
   uploadsPlaylistId: "UUftZF7glmrU1a_hvzWD4EDQ",
 };
@@ -426,7 +426,9 @@ async function loadGigs() {
 
     if (upcoming.length) {
       billNextGig(upcoming[0]);
-      $("#gigYear").textContent = gigDate(upcoming[0]).getFullYear();
+      // "2026" for a single year, "2026/27" when the list runs into the next one
+      const y1 = gigDate(upcoming[0]).getFullYear(), y2 = gigDate(upcoming[upcoming.length - 1]).getFullYear();
+      $("#gigYear").textContent = y1 === y2 ? y1 : `${y1}/${String(y2).slice(-2)}`;
     } else {
       $("#nextLabel").textContent = "On the road";
       $("#nextDate").textContent = "New dates soon";
