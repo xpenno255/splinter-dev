@@ -291,7 +291,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .snap { position: relative; transform: rotate(-2.2deg); margin-top: 10px; }
 .snap.reveal { transform: translateY(34px) rotate(-6deg); }
 .snap.reveal.is-in { transform: rotate(-2.2deg); }
-.snap .halftone { border: 10px solid var(--white); box-shadow: 0 0 0 1px rgba(0, 0, 0, .25), 14px 16px 0 rgba(0, 0, 0, .9); }
+.snap .print { border: 10px solid var(--white); box-shadow: 0 0 0 1px rgba(0, 0, 0, .25), 14px 16px 0 rgba(0, 0, 0, .9); }
 .snap figcaption { font-family: var(--f-type); font-size: 14px; margin-top: 22px; padding-left: 6px; color: var(--mute-on-paper); }
 .snap__tape {
   position: absolute; z-index: 2; width: 132px; height: 34px; top: -16px;
@@ -302,19 +302,14 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .snap__tape--r { right: -30px; transform: rotate(24deg); }
 .snap__tape--c { left: 50%; margin-left: -66px; top: -20px; transform: rotate(-4deg); }
 .snaps { display: grid; }
-.snap--b { width: 68%; justify-self: end; margin-top: clamp(18px, 3vw, 46px); --dot: 5px; }
+.snap--b { width: 68%; justify-self: end; margin-top: clamp(18px, 3vw, 46px); }
 .snap--b, .snap--b.reveal.is-in { transform: rotate(3.2deg); }
 .snap--b.reveal { transform: translateY(34px) rotate(8deg); }
 .snap--b figcaption { text-align: right; padding-right: 6px; }
 
-/* live halftone: grey mid-tones resolve into dots that scale with brightness */
-.halftone { position: relative; overflow: hidden; background: #fff; filter: contrast(22) grayscale(1); isolation: isolate; }
-.halftone img { width: 100%; height: auto; filter: contrast(.42) brightness(1.05) blur(.7px); mix-blend-mode: hard-light; position: relative; z-index: 1; }
-.halftone::before {
-  content: ""; position: absolute; inset: -60%;
-  background: radial-gradient(circle at center, #1c1c1c, #fff) 0 0 / var(--dot, 6px) var(--dot, 6px);
-  transform: rotate(24deg);
-}
+/* real band photos: shown as straight black-and-white prints so faces stay readable */
+.print { background: var(--ink); }
+.print img { width: 100%; height: auto; filter: grayscale(1) contrast(1.12); }
 
 .band__text { display: grid; gap: 26px; align-content: start; padding-top: 8px; }
 .band__text > p:not(.lead):not(.scrawl) { font-size: 18px; max-width: 46ch; }
