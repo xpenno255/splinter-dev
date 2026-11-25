@@ -85,7 +85,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   transition: transform .35s cubic-bezier(.7, 0, .2, 1), background .2s, border-color .2s;
 }
 .nav.is-stuck { background: var(--ink); border-bottom-color: var(--white); }
-.nav.is-away { transform: translateY(-105%); }
+/* the logo sticker hangs ~23px below the bar, so the bar has to travel further than its own height */
+.nav.is-away { transform: translateY(calc(-100% - 32px)); }
 .nav:focus-within { transform: none; }
 /* The logo hangs off the bar like a sticker, and only appears once the big one has scrolled away. */
 .nav__brand { align-self: flex-start; margin-top: 7px; position: relative; z-index: 1; transition: opacity .25s, transform .3s cubic-bezier(.2, 1.4, .3, 1); }
